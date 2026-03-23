@@ -1,0 +1,287 @@
+{
+  "ignore_prefixes": [
+    ".",
+    "~$"
+  ],
+  "cluster_stopwords": [
+    "manual",
+    "guide",
+    "faq",
+    "사용자",
+    "사용",
+    "매뉴얼",
+    "가이드",
+    "신청",
+    "안내",
+    "업데이트",
+    "정리",
+    "관련",
+    "자료",
+    "첨부",
+    "원본",
+    "오리지널",
+    "전사",
+    "사본",
+    "for",
+    "및",
+    "년도자료",
+    "s001",
+    "팀",
+    "용",
+    "버전"
+  ],
+  "category_rules": [
+    {
+      "path": [
+        "개인",
+        "증빙서류"
+      ],
+      "allow_extension_only": false,
+      "extensions": [
+        "pdf",
+        "jpg",
+        "jpeg",
+        "png"
+      ],
+      "keywords": [
+        "정닛시",
+        "김해숙",
+        "가족관계증명서",
+        "혼인관계증명서",
+        "주민등록",
+        "고용보험",
+        "건강보험",
+        "국민연금",
+        "기부금",
+        "보험료",
+        "의료비",
+        "신용카드",
+        "직불카드",
+        "현금영수증",
+        "소득기준초과",
+        "연말정산",
+        "증명서",
+        "월세액"
+      ]
+    },
+    {
+      "path": [
+        "업무",
+        "회계정산"
+      ],
+      "allow_extension_only": false,
+      "extensions": [
+        "csv",
+        "xls",
+        "xlsx",
+        "pdf",
+        "html"
+      ],
+      "keywords": [
+        "accounting",
+        "ledger",
+        "ledgers",
+        "reconciliation",
+        "reconcile",
+        "settlement",
+        "shopify",
+        "pricing",
+        "materialpricingmaster",
+        "rentalpricingmaster",
+        "collection",
+        "hana",
+        "hanacard",
+        "법인카드",
+        "회계",
+        "정산",
+        "재무",
+        "세금",
+        "매출",
+        "카드",
+        "necoa",
+        "렌탈자산",
+        "미실현조정",
+        "oms",
+        "charge",
+        "판매량",
+        "명세서",
+        "chase",
+        "대손충당금"
+      ]
+    },
+    {
+      "path": [
+        "업무",
+        "인사총무"
+      ],
+      "allow_extension_only": false,
+      "extensions": [
+        "pdf",
+        "xls",
+        "xlsx",
+        "pptx"
+      ],
+      "keywords": [
+        "인사",
+        "조직개편",
+        "승진",
+        "임금",
+        "평가",
+        "채용",
+        "연차",
+        "재직",
+        "건강검진",
+        "검진",
+        "근로계약",
+        "연봉",
+        "직원",
+        "임직원",
+        "캘린더",
+        "규정",
+        "할인가격",
+        "여비교통비",
+        "기념일",
+        "간식"
+      ]
+    },
+    {
+      "path": [
+        "업무",
+        "매뉴얼"
+      ],
+      "allow_extension_only": false,
+      "extensions": [
+        "pdf",
+        "pptx",
+        "xlsx"
+      ],
+      "keywords": [
+        "manual",
+        "guide",
+        "faq",
+        "매뉴얼",
+        "가이드",
+        "사용자",
+        "사용",
+        "메뉴얼",
+        "신청안내",
+        "안내문",
+        "getmac",
+        "방법",
+        "소개서"
+      ]
+    },
+    {
+      "path": [
+        "개발",
+        "SQL"
+      ],
+      "allow_extension_only": true,
+      "extensions": [
+        "sql"
+      ],
+      "keywords": [
+        "sql",
+        "migration",
+        "query"
+      ]
+    },
+    {
+      "path": [
+        "개발",
+        "설계자료"
+      ],
+      "allow_extension_only": false,
+      "extensions": [
+        "png",
+        "jpg",
+        "jpeg",
+        "pdf",
+        "md",
+        "kt"
+      ],
+      "keywords": [
+        "architecture",
+        "architect",
+        "hexagonal",
+        "layered",
+        "clean",
+        "erd",
+        "drawio",
+        "diagram",
+        "process",
+        "flow",
+        "dip",
+        "repository",
+        "아키텍처",
+        "클린",
+        "interface",
+        "정의서"
+      ]
+    },
+    {
+      "path": [
+        "소프트웨어",
+        "설치파일"
+      ],
+      "allow_extension_only": true,
+      "extensions": [
+        "dmg",
+        "pkg",
+        "zip"
+      ],
+      "keywords": [
+        "codex",
+        "docker",
+        "notion",
+        "obsidian",
+        "chrome",
+        "vscode",
+        "idea",
+        "datagrip",
+        "postman",
+        "pcassist",
+        "pulse",
+        "anysign",
+        "dbsafer",
+        "jre"
+      ]
+    },
+    {
+      "path": [
+        "이미지",
+        "사진자료"
+      ],
+      "allow_extension_only": true,
+      "extensions": [
+        "jpg",
+        "jpeg",
+        "png",
+        "gif"
+      ],
+      "keywords": [
+        "img",
+        "photo",
+        "screenshot"
+      ]
+    },
+    {
+      "path": [
+        "보관",
+        "압축파일"
+      ],
+      "allow_extension_only": true,
+      "extensions": [
+        "zip",
+        "7z",
+        "rar",
+        "tar",
+        "gz"
+      ],
+      "keywords": [
+        "archive",
+        "backup"
+      ]
+    }
+  ]
+}

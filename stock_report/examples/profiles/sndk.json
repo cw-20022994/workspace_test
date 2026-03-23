@@ -1,0 +1,73 @@
+{
+  "asset_type": "stock",
+  "report_time_utc": "2026-03-18T05:30:00Z",
+  "benchmark_symbol": "SPY",
+  "prices": {
+    "return_5d": 3.2,
+    "return_20d": 8.4,
+    "return_60d": 14.1,
+    "rs_20d": 4.9,
+    "rs_60d": 7.2,
+    "price_vs_ma20": 1.04,
+    "price_vs_ma50": 1.08,
+    "price_vs_ma200": 1.12,
+    "drawdown": -9.5,
+    "volatility": 34.0
+  },
+  "fundamentals": {
+    "revenue_growth": 11.0,
+    "earnings_growth": 15.0,
+    "gross_margin": 38.0,
+    "operating_margin": 13.0,
+    "forward_pe": 24.0,
+    "net_debt_to_ebitda": 1.2
+  },
+  "news": [
+    {
+      "headline": "Sandisk expands HBF ecosystem work with additional interoperability partners",
+      "source": "Company IR",
+      "published_at": "2026-03-15T13:00:00Z",
+      "impact": "positive",
+      "materiality": 0.9,
+      "tags": ["standardization", "ecosystem", "ai_inference"]
+    },
+    {
+      "headline": "Memory and storage suppliers discuss inference-tier architecture needs",
+      "source": "Industry Conference",
+      "published_at": "2026-03-13T09:00:00Z",
+      "impact": "positive",
+      "materiality": 0.6,
+      "tags": ["ai_inference", "product_launch"]
+    },
+    {
+      "headline": "Investors remain cautious on timing of HBF commercialization at scale",
+      "source": "Market Commentary",
+      "published_at": "2026-03-12T18:00:00Z",
+      "impact": "mixed",
+      "materiality": 0.5,
+      "tags": ["commercialization", "supply_chain"]
+    }
+  ],
+  "risk_flags": [
+    "Theme adoption is still earlier than mainstream HBM demand.",
+    "Commercial scale timing remains uncertain."
+  ],
+  "freshness": {
+    "price_data_as_of": "2026-03-17",
+    "fundamentals_data_as_of": "2026-01-31",
+    "news_window": "2026-03-11 to 2026-03-18",
+    "price_data_age_days": 1,
+    "fundamentals_data_age_days": 47,
+    "news_data_age_days": 0
+  },
+  "theme_signals": {
+    "standardization_progress": true,
+    "ecosystem_partners": 2,
+    "ai_inference_mentions": 2,
+    "commercial_sampling": true,
+    "shipment_evidence": false,
+    "concept_only_news_count": 0,
+    "single_source_hype": false
+  },
+  "notes": "Sample profile focused on HBF-specific evidence."
+}

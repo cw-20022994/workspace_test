@@ -1,0 +1,65 @@
+{
+  "asset_type": "stock",
+  "report_time_utc": "2026-03-18T05:30:00Z",
+  "benchmark_symbol": "SPY",
+  "prices": {
+    "return_5d": 4.1,
+    "return_20d": 9.6,
+    "return_60d": 22.4,
+    "rs_20d": 6.8,
+    "rs_60d": 10.2,
+    "price_vs_ma20": 1.05,
+    "price_vs_ma50": 1.11,
+    "price_vs_ma200": 1.28,
+    "drawdown": -7.2,
+    "volatility": 31.0
+  },
+  "fundamentals": {
+    "revenue_growth": 48.0,
+    "earnings_growth": 55.0,
+    "gross_margin": 74.0,
+    "operating_margin": 58.0,
+    "forward_pe": 36.0,
+    "ev_to_sales": 20.0,
+    "net_debt_to_ebitda": 0.2
+  },
+  "news": [
+    {
+      "headline": "NVIDIA highlights continued AI accelerator and networking demand",
+      "source": "Company IR",
+      "published_at": "2026-03-16T20:00:00Z",
+      "impact": "positive",
+      "materiality": 0.9,
+      "tags": ["earnings", "guidance", "product_launch"]
+    },
+    {
+      "headline": "Cloud providers continue to expand AI infrastructure budgets",
+      "source": "Industry News",
+      "published_at": "2026-03-14T08:00:00Z",
+      "impact": "positive",
+      "materiality": 0.7,
+      "tags": ["ai_infrastructure"]
+    },
+    {
+      "headline": "Valuation debate persists after another strong run in AI names",
+      "source": "Market Commentary",
+      "published_at": "2026-03-13T10:30:00Z",
+      "impact": "mixed",
+      "materiality": 0.5,
+      "tags": ["valuation"]
+    }
+  ],
+  "risk_flags": [
+    "Valuation remains elevated relative to the broader market."
+  ],
+  "freshness": {
+    "price_data_as_of": "2026-03-17",
+    "fundamentals_data_as_of": "2026-01-31",
+    "news_window": "2026-03-11 to 2026-03-18",
+    "price_data_age_days": 1,
+    "fundamentals_data_age_days": 47,
+    "news_data_age_days": 0
+  },
+  "theme_signals": {},
+  "notes": "Sample profile for an AI compute leader."
+}

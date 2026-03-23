@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.pyc
+*.pyo
+*.pyd
+*.log
+state.json
+config.toml
+data/*.json
+data/*.jsonl
+!data/.gitkeep

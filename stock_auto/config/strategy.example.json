@@ -1,0 +1,20 @@
+{
+  "symbol": "SPY",
+  "session_timezone": "America/New_York",
+  "session_start": "09:30",
+  "session_end": "11:00",
+  "opening_range_minutes": 15,
+  "signal_bar_minutes": 5,
+  "breakout_lookahead_bars": 1,
+  "min_fvg_size_abs": 0.05,
+  "min_fvg_size_ratio": 0.0005,
+  "risk_reward_ratio": 2.0,
+  "account_size": 100000.0,
+  "account_risk_pct": 0.0025,
+  "max_position_notional_pct": 0.2,
+  "min_stop_distance_pct": 0.0015,
+  "max_stop_distance_pct": 0.012,
+  "price_tick_size": 0.01,
+  "stop_slippage_per_share": 0.01,
+  "force_exit_slippage_per_share": 0.01
+}

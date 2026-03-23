@@ -1,0 +1,120 @@
+version: 1
+
+defaults:
+  benchmark_symbol: SPY
+  currency: USD
+  allowed_regions:
+    - US
+    - KR_HBM_HBF_ONLY
+  lookback_days:
+    short: 20
+    medium: 60
+    long: 252
+
+required_etfs:
+  - symbol: SPY
+    name: SPDR S&P 500 ETF Trust
+    role: primary_benchmark
+    thesis: Broad US large-cap benchmark
+  - symbol: VOO
+    name: Vanguard S&P 500 ETF
+    role: alternate_benchmark
+    thesis: Low-cost S&P 500 exposure
+  - symbol: IVV
+    name: iShares Core S&P 500 ETF
+    role: alternate_benchmark
+    thesis: Core S&P 500 exposure
+
+core_etfs:
+  - symbol: QQQ
+    name: Invesco QQQ Trust
+    role: growth_proxy
+  - symbol: IWM
+    name: iShares Russell 2000 ETF
+    role: small_cap_proxy
+  - symbol: XLK
+    name: Technology Select Sector SPDR Fund
+    role: sector_proxy
+  - symbol: SOXX
+    name: iShares Semiconductor ETF
+    role: semiconductor_proxy
+  - symbol: SMH
+    name: VanEck Semiconductor ETF
+    role: semiconductor_proxy
+
+us_theme_stocks:
+  - symbol: NVDA
+    name: NVIDIA
+    theme: ai_compute
+  - symbol: AMD
+    name: AMD
+    theme: ai_compute
+  - symbol: AVGO
+    name: Broadcom
+    theme: ai_networking_optical
+  - symbol: MRVL
+    name: Marvell Technology
+    theme: ai_networking_optical
+  - symbol: ANET
+    name: Arista Networks
+    theme: ai_networking_optical
+  - symbol: MU
+    name: Micron Technology
+    theme: semiconductor_memory
+  - symbol: SNDK
+    name: Sandisk
+    theme: hbf_memory_storage
+    note: HBF standardization theme with SK hynix
+  - symbol: AMAT
+    name: Applied Materials
+    theme: semiconductor_equipment
+  - symbol: LRCX
+    name: Lam Research
+    theme: semiconductor_equipment
+  - symbol: KLAC
+    name: KLA
+    theme: semiconductor_equipment
+  - symbol: VRT
+    name: Vertiv
+    theme: ai_power_cooling
+
+korea_hbm_hbf_stocks:
+  - symbol: 000660.KS
+    name: SK hynix
+    market: KR
+    theme: korea_hbm_hbf
+    note: Include as the default Korea exception for HBM/HBF coverage
+  - symbol: 005930.KS
+    name: Samsung Electronics
+    market: KR
+    theme: korea_hbm_hbf
+    note: Include for HBM and advanced memory exposure within the Korea exception
+
+theme_notes:
+  - theme: ai_compute
+    rationale: Core AI accelerator demand
+  - theme: semiconductor_memory
+    rationale: Memory and HBM demand linked to AI infrastructure
+  - theme: hbf_memory_storage
+    rationale: Emerging AI inference memory and storage theme tied to HBF development
+    overlay: Reward standardization, ecosystem, and commercialization evidence while penalizing pure concept hype
+  - theme: ai_networking_optical
+    rationale: AI cluster spend extends beyond GPUs into networking and optics
+  - theme: semiconductor_equipment
+    rationale: Advanced logic and memory demand drives equipment intensity
+  - theme: ai_power_cooling
+    rationale: AI racks increase data center power and thermal requirements
+
+excluded_examples:
+  - symbol: AAPL
+    name: Apple
+    reason: Excluded from MVP unless later expanded into broad mega-cap coverage
+  - symbol: JPM
+    name: JPMorgan Chase
+    reason: Out of scope for the AI and semiconductor-focused MVP
+
+reporting:
+  max_news_items: 5
+  render_formats:
+    - markdown
+    - json

@@ -1,0 +1,22 @@
+version: 1
+
+weights:
+  trend: 0.35
+  fundamentals: 0.25
+  news: 0.20
+  risk: 0.20
+
+verdict_thresholds:
+  review_min: 70.0
+  hold_min: 50.0
+
+confidence_thresholds:
+  high_min: 80.0
+  medium_min: 60.0
+
+calibration_policy:
+  target_horizon: 20
+  min_completed_observations: 12
+  min_group_observations: 4
+  threshold_step: 5.0
+  max_weight_shift: 0.05

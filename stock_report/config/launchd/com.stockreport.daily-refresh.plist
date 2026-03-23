@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.stockreport.daily-refresh</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Users/jeongnis-si/workspace_test/stock_report/scripts/run_daily_refresh.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/jeongnis-si/workspace_test/stock_report</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+      <key>LANG</key>
+      <string>ko_KR.UTF-8</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>8</integer>
+      <key>Minute</key>
+      <integer>30</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/jeongnis-si/workspace_test/stock_report/reports/logs/daily_refresh.stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/jeongnis-si/workspace_test/stock_report/reports/logs/daily_refresh.stderr.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+  </dict>
+</plist>
