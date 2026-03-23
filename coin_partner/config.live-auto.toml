@@ -46,7 +46,7 @@ rsi_min = 52
 rsi_max = 68
 overheat_10m_limit_pct = 0.018
 relaxed_hourly_trend_markets = ["KRW-BTC"]
-hourly_ema20_rising_bars = 3
+hourly_ema20_rising_bars = 2
 
 [risk]
 max_open_positions = 10
