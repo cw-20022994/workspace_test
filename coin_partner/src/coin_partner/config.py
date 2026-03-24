@@ -94,6 +94,8 @@ class RiskConfig:
     cooldown_after_take_profit_minutes: int
     same_market_cooldown_minutes: int
     min_krw_balance_buffer: float
+    early_exit_check_minutes: int = 0
+    early_exit_min_pnl_pct: float = 0.0
 
 
 @dataclass
@@ -183,6 +185,8 @@ class AppConfig:
             breakeven_trigger_pct=float(raw["risk"]["breakeven_trigger_pct"]),
             breakeven_offset_pct=float(raw["risk"]["breakeven_offset_pct"]),
             max_hold_minutes=int(raw["risk"]["max_hold_minutes"]),
+            early_exit_check_minutes=int(raw["risk"].get("early_exit_check_minutes", 0)),
+            early_exit_min_pnl_pct=float(raw["risk"].get("early_exit_min_pnl_pct", 0.0)),
             cooldown_after_stop_minutes=int(raw["risk"]["cooldown_after_stop_minutes"]),
             cooldown_after_take_profit_minutes=int(raw["risk"]["cooldown_after_take_profit_minutes"]),
             same_market_cooldown_minutes=int(raw["risk"]["same_market_cooldown_minutes"]),
@@ -206,6 +210,10 @@ class AppConfig:
             raise ValueError("strategy.hourly_ema20_rising_bars must be positive")
         if self.risk.stop_loss_pct <= 0 or self.risk.take_profit_pct <= 0:
             raise ValueError("risk stop/take profit must be positive")
+        if self.risk.early_exit_check_minutes < 0:
+            raise ValueError("risk.early_exit_check_minutes cannot be negative")
+        if self.risk.early_exit_min_pnl_pct < 0:
+            raise ValueError("risk.early_exit_min_pnl_pct cannot be negative")
         if self.risk.max_trades_per_day < 0:
             raise ValueError("risk.max_trades_per_day cannot be negative")
         if self.risk.max_consecutive_stop_losses < 0:

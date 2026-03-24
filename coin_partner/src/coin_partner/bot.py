@@ -164,7 +164,7 @@ class TradingBot:
             )
             if not allowed:
                 logger.info("Entry blocked for %s: %s", market, reason)
-                if reason == "market_cooldown_active":
+                if reason in {"market_cooldown_active", "market_position_open"}:
                     continue
                 return
 

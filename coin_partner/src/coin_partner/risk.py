@@ -25,6 +25,8 @@ class RiskManager:
         risk = self.config.risk
         strategy = self.config.strategy
 
+        if any(position.market == market for position in state.positions):
+            return False, "market_position_open"
         if len(state.positions) >= risk.max_open_positions:
             return False, "max_open_positions_reached"
         if daily.stopped_for_day:
@@ -74,6 +76,11 @@ class RiskManager:
             return ExitDecision(True, "stop_loss", pnl_pct, effective_stop)
         if current_price >= position.take_profit_price:
             return ExitDecision(True, "take_profit", pnl_pct, effective_stop)
+
+        early_exit = timedelta(minutes=self.config.risk.early_exit_check_minutes)
+        if early_exit.total_seconds() > 0 and now - position.opened_at >= early_exit:
+            if pnl_pct < self.config.risk.early_exit_min_pnl_pct:
+                return ExitDecision(True, "stalled_trade_exit", pnl_pct, effective_stop)
 
         max_hold = timedelta(minutes=self.config.risk.max_hold_minutes)
         if now - position.opened_at >= max_hold:
