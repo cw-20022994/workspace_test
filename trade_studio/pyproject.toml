@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "coin-partner"
+name = "trade-studio"
 version = "0.1.0"
-description = "Personal Upbit spot auto-trading bot with conservative risk controls."
+description = "Desktop crypto trading studio scaffold with exchange adapters and strategy profiles."
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
@@ -16,8 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-coin-partner-bot = "coin_partner.cli:main"
-coin-partner-ui = "coin_partner.desktop_prototype:main"
+trade-studio = "trade_studio.bootstrap:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -182,6 +182,34 @@ python -m coin_partner.cli --config config.live-auto.toml
 - macOS의 `live_auto_service.sh`에 대응하는 Windows 서비스 스크립트는 아직 없습니다.
 - Windows에서는 `PowerShell`, `작업 스케줄러`, 또는 별도 서비스 래퍼로 운영해야 합니다.
 
+## Desktop UI Prototype
+
+크몽/제안서/캡처용 데스크탑 UI 프로토타입은 실거래 로직과 분리돼 있습니다.
+
+설치:
+
+```bash
+pip install -e .
+```
+
+실행:
+
+```bash
+coin-partner-ui
+```
+
+또는:
+
+```bash
+PYTHONPATH=src python3 -m coin_partner.desktop_prototype
+```
+
+주의:
+
+- 이 화면은 현재 더미 데이터 기반 프로토타입입니다.
+- 주문 실행이나 API 연결은 하지 않습니다.
+- 기존 `coin_partner.cli` 동작에는 영향을 주지 않습니다.
+
 ## Upbit Live Connection Checklist
 
 실거래 연결은 아래 순서가 안전합니다.
