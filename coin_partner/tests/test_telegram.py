@@ -56,9 +56,10 @@ class TelegramNotifierTest(unittest.TestCase):
         notifier.notify_entry(position, state)
 
         self.assertEqual(len(delivered), 1)
-        self.assertIn("[ENTRY]", delivered[0])
-        self.assertIn("KRW-BTC", delivered[0])
-        self.assertIn("cash: 169,985 KRW", delivered[0])
+        self.assertIn("[진입]", delivered[0])
+        self.assertIn("<code>KRW-BTC</code>", delivered[0])
+        self.assertIn("<code>paper</code> 모의매매", delivered[0])
+        self.assertIn("남은 현금: 169,985 KRW", delivered[0])
 
     def test_error_notification_is_rate_limited(self) -> None:
         delivered = []
@@ -78,8 +79,9 @@ class TelegramNotifierTest(unittest.TestCase):
         notifier.notify_error("third error", third)
 
         self.assertEqual(len(delivered), 2)
-        self.assertIn("first error", delivered[0])
-        self.assertIn("third error", delivered[1])
+        self.assertIn("[오류]", delivered[0])
+        self.assertIn("<code>first error</code>", delivered[0])
+        self.assertIn("<code>third error</code>", delivered[1])
 
     def test_daily_summary_and_heartbeat_messages_include_status(self) -> None:
         delivered = []
@@ -109,11 +111,12 @@ class TelegramNotifierTest(unittest.TestCase):
         notifier.notify_heartbeat(state, datetime(2026, 3, 20, 22, 0), mark_prices={"KRW-ETH": 4550000.0})
 
         self.assertEqual(len(delivered), 2)
-        self.assertIn("[DAY SUMMARY]", delivered[0])
-        self.assertIn("wins / losses: 2 / 1", delivered[0])
-        self.assertIn("[HEARTBEAT]", delivered[1])
-        self.assertIn("open positions: 1", delivered[1])
-        self.assertIn("unrealized:", delivered[1])
+        self.assertIn("[일일 요약]", delivered[0])
+        self.assertIn("<code>2026-03-20</code>", delivered[0])
+        self.assertIn("승 / 패: 2 / 1", delivered[0])
+        self.assertIn("[상태 점검]", delivered[1])
+        self.assertIn("보유 포지션 수: 1개", delivered[1])
+        self.assertIn("평가손익:", delivered[1])
 
 
 if __name__ == "__main__":

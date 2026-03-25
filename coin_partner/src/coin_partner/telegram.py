@@ -68,16 +68,18 @@ class TelegramNotifier:
         if not (self.settings.enabled and self.settings.notify_entry):
             return False
         lines = [
-            "<b>[ENTRY]</b>",
-            "mode: {0}".format(escape(self.mode)),
-            "market: <code>{0}</code>".format(escape(position.market)),
-            "entry: {0:,.0f} KRW".format(position.entry_price),
-            "amount: {0:,.0f} KRW".format(position.invested_krw),
-            "volume: {0:.8f}".format(position.volume),
-            "stop: {0:,.0f} KRW".format(position.stop_price),
-            "take: {0:,.0f} KRW".format(position.take_profit_price),
-            "daily pnl: {0:,.0f} KRW".format(state.daily.realized_pnl_krw),
-            "cash: {0:,.0f} KRW".format(state.paper_cash_krw) if self.mode == "paper" else "trade count: {0}".format(state.daily.trade_count),
+            "<b>[진입]</b>",
+            self._format_code_line("모드", self.mode, self._mode_description(self.mode)),
+            self._format_code_line("마켓", position.market, "진입한 거래 마켓"),
+            "진입가: {0:,.0f} KRW".format(position.entry_price),
+            "진입금액: {0:,.0f} KRW".format(position.invested_krw),
+            "수량: {0:.8f}".format(position.volume),
+            "손절가: {0:,.0f} KRW".format(position.stop_price),
+            "익절가: {0:,.0f} KRW".format(position.take_profit_price),
+            "오늘 누적 손익: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
+            "남은 현금: {0:,.0f} KRW".format(state.paper_cash_krw)
+            if self.mode == "paper"
+            else "오늘 거래 횟수: {0}회".format(state.daily.trade_count),
         ]
         return self._deliver("\n".join(lines))
 
@@ -95,16 +97,18 @@ class TelegramNotifier:
         if position.invested_krw > 0:
             pnl_pct = pnl_krw / position.invested_krw
         lines = [
-            "<b>[EXIT]</b>",
-            "mode: {0}".format(escape(self.mode)),
-            "market: <code>{0}</code>".format(escape(position.market)),
-            "reason: <code>{0}</code>".format(escape(reason)),
-            "entry: {0:,.0f} KRW".format(position.entry_price),
-            "exit: {0:,.0f} KRW".format(exit_price),
-            "pnl: {0:+,.0f} KRW ({1:+.2f}%)".format(pnl_krw, pnl_pct * 100),
-            "daily pnl: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
-            "trade count: {0}".format(state.daily.trade_count),
-            "cash: {0:,.0f} KRW".format(state.paper_cash_krw) if self.mode == "paper" else "consecutive losses: {0}".format(state.daily.consecutive_stop_losses),
+            "<b>[청산]</b>",
+            self._format_code_line("모드", self.mode, self._mode_description(self.mode)),
+            self._format_code_line("마켓", position.market, "청산된 거래 마켓"),
+            self._format_code_line("사유 코드", reason, self._reason_description(reason)),
+            "진입가: {0:,.0f} KRW".format(position.entry_price),
+            "청산가: {0:,.0f} KRW".format(exit_price),
+            "실현손익: {0:+,.0f} KRW ({1:+.2f}%)".format(pnl_krw, pnl_pct * 100),
+            "오늘 누적 손익: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
+            "오늘 거래 횟수: {0}회".format(state.daily.trade_count),
+            "남은 현금: {0:,.0f} KRW".format(state.paper_cash_krw)
+            if self.mode == "paper"
+            else "연속 손실: {0}회".format(state.daily.consecutive_stop_losses),
         ]
         return self._deliver("\n".join(lines))
 
@@ -112,11 +116,11 @@ class TelegramNotifier:
         if not (self.settings.enabled and self.settings.notify_daily_stop):
             return False
         lines = [
-            "<b>[DAY STOP]</b>",
-            "trading halted for today",
-            "daily pnl: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
-            "trade count: {0}".format(state.daily.trade_count),
-            "consecutive losses: {0}".format(state.daily.consecutive_stop_losses),
+            "<b>[일중 중지]</b>",
+            "오늘 자동매매를 중지합니다.",
+            "오늘 누적 손익: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
+            "오늘 거래 횟수: {0}회".format(state.daily.trade_count),
+            "연속 손실: {0}회".format(state.daily.consecutive_stop_losses),
         ]
         return self._deliver("\n".join(lines))
 
@@ -132,16 +136,18 @@ class TelegramNotifier:
         if not (self.settings.enabled and self.settings.notify_daily_summary):
             return False
         lines = [
-            "<b>[DAY SUMMARY]</b>",
-            "date: <code>{0}</code>".format(escape(summary_date)),
-            "mode: {0}".format(escape(self.mode)),
-            "daily pnl: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
-            "trade count: {0}".format(state.daily.trade_count),
-            "wins / losses: {0} / {1}".format(wins, losses),
-            "best trade: {0:+,.0f} KRW".format(best_trade_pnl_krw),
-            "worst trade: {0:+,.0f} KRW".format(worst_trade_pnl_krw),
-            "cash: {0:,.0f} KRW".format(state.paper_cash_krw) if self.mode == "paper" else "stopped for day: {0}".format(state.daily.stopped_for_day),
-            "open positions: {0}".format(len(state.positions)),
+            "<b>[일일 요약]</b>",
+            self._format_code_line("기준일", summary_date, "요약 대상 날짜"),
+            self._format_code_line("모드", self.mode, self._mode_description(self.mode)),
+            "오늘 누적 손익: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
+            "오늘 거래 횟수: {0}회".format(state.daily.trade_count),
+            "승 / 패: {0} / {1}".format(wins, losses),
+            "최대 이익 거래: {0:+,.0f} KRW".format(best_trade_pnl_krw),
+            "최대 손실 거래: {0:+,.0f} KRW".format(worst_trade_pnl_krw),
+            "남은 현금: {0:,.0f} KRW".format(state.paper_cash_krw)
+            if self.mode == "paper"
+            else "일중 중지 여부: {0}".format(self._bool_text(state.daily.stopped_for_day)),
+            "보유 포지션 수: {0}개".format(len(state.positions)),
         ]
         return self._deliver("\n".join(lines))
 
@@ -154,22 +160,24 @@ class TelegramNotifier:
         if not (self.settings.enabled and self.settings.notify_heartbeat):
             return False
         lines = [
-            "<b>[HEARTBEAT]</b>",
-            "mode: {0}".format(escape(self.mode)),
-            "time: <code>{0}</code>".format(escape(now.isoformat(timespec="seconds"))),
-            "daily pnl: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
-            "trade count: {0}".format(state.daily.trade_count),
-            "cash: {0:,.0f} KRW".format(state.paper_cash_krw) if self.mode == "paper" else "stopped for day: {0}".format(state.daily.stopped_for_day),
+            "<b>[상태 점검]</b>",
+            self._format_code_line("모드", self.mode, self._mode_description(self.mode)),
+            self._format_code_line("기준 시각", now.isoformat(timespec="seconds"), "상태 점검 시각"),
+            "오늘 누적 손익: {0:+,.0f} KRW".format(state.daily.realized_pnl_krw),
+            "오늘 거래 횟수: {0}회".format(state.daily.trade_count),
+            "남은 현금: {0:,.0f} KRW".format(state.paper_cash_krw)
+            if self.mode == "paper"
+            else "일중 중지 여부: {0}".format(self._bool_text(state.daily.stopped_for_day)),
         ]
         if not state.positions:
-            lines.append("position: flat")
+            lines.append("보유 포지션: 없음")
         else:
-            lines.append("open positions: {0}".format(len(state.positions)))
+            lines.append("보유 포지션 수: {0}개".format(len(state.positions)))
             total_unrealized_krw = 0.0
             mark_prices = mark_prices or {}
             for position in state.positions:
-                lines.append("position: <code>{0}</code>".format(escape(position.market)))
-                lines.append("entry: {0:,.0f} KRW".format(position.entry_price))
+                lines.append(self._format_code_line("보유 마켓", position.market, "현재 보유 중"))
+                lines.append("진입가: {0:,.0f} KRW".format(position.entry_price))
                 mark_price = mark_prices.get(position.market)
                 if mark_price is None:
                     continue
@@ -178,10 +186,10 @@ class TelegramNotifier:
                 unrealized_pct = 0.0
                 if position.invested_krw > 0:
                     unrealized_pct = unrealized_krw / position.invested_krw
-                lines.append("mark: {0:,.0f} KRW".format(mark_price))
-                lines.append("unrealized: {0:+,.0f} KRW ({1:+.2f}%)".format(unrealized_krw, unrealized_pct * 100))
+                lines.append("현재가: {0:,.0f} KRW".format(mark_price))
+                lines.append("평가손익: {0:+,.0f} KRW ({1:+.2f}%)".format(unrealized_krw, unrealized_pct * 100))
             if len(state.positions) > 1:
-                lines.append("total unrealized: {0:+,.0f} KRW".format(total_unrealized_krw))
+                lines.append("평가손익 합계: {0:+,.0f} KRW".format(total_unrealized_krw))
         return self._deliver("\n".join(lines))
 
     def notify_error(self, message: str, now: Optional[datetime] = None) -> bool:
@@ -194,10 +202,38 @@ class TelegramNotifier:
                 return False
         self._last_error_sent_at = now
         lines = [
-            "<b>[ERROR]</b>",
-            escape(message),
+            "<b>[오류]</b>",
+            "자동매매 실행 중 예외가 발생했습니다.",
+            self._format_code_line("오류 내용", message, "원본 예외 메시지"),
         ]
         return self._deliver("\n".join(lines))
+
+    def _format_code_line(self, label: str, value: str, description: str) -> str:
+        return "{0}: <code>{1}</code> {2}".format(
+            escape(label),
+            escape(value),
+            escape(description),
+        )
+
+    def _mode_description(self, mode: str) -> str:
+        if mode == "paper":
+            return "모의매매"
+        if mode == "live":
+            return "실거래"
+        return "사용자 지정 모드"
+
+    def _reason_description(self, reason: str) -> str:
+        descriptions = {
+            "stop_loss": "손절 기준 도달",
+            "take_profit": "익절 기준 도달",
+            "stalled_trade_exit": "초기 반응이 약해 조기 청산",
+            "time_exit": "최대 보유 시간 도달",
+            "unknown": "사유를 확인하지 못한 기본 코드",
+        }
+        return descriptions.get(reason, "청산 사유 코드")
+
+    def _bool_text(self, value: bool) -> str:
+        return "예" if value else "아니오"
 
     def _deliver(self, text: str) -> bool:
         try:
