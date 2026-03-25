@@ -108,7 +108,7 @@ class PrototypeWindow(QMainWindow):
         self.snapshot = snapshot
         self.stack = QStackedWidget()
         self.sidebar = QListWidget()
-        self.setWindowTitle("Coin Partner Studio Prototype")
+        self.setWindowTitle("코인 파트너 프로토타입")
         self.resize(1480, 920)
         self._configure_fonts()
         self._build_ui()
@@ -138,21 +138,15 @@ class PrototypeWindow(QMainWindow):
         layout.setContentsMargins(22, 24, 22, 24)
         layout.setSpacing(18)
 
-        brand = QLabel("Coin Partner\nStudio")
+        brand = QLabel("코인 파트너")
         brand.setObjectName("brandLabel")
-        caption = QLabel("Sales prototype for a desktop auto-trading product.")
+        caption = QLabel("너무 복잡하지 않게, 개인도 바로 이해할 수 있는 자동매매 화면 예시")
         caption.setWordWrap(True)
         caption.setObjectName("sideCaption")
 
         self.sidebar.setObjectName("navList")
         self.sidebar.setSpacing(8)
-        for item_text in [
-            "Control Room",
-            "Strategy Studio",
-            "Risk Desk",
-            "Exchange Vault",
-            "Activity Tape",
-        ]:
+        for item_text in ["홈", "설정"]:
             item = QListWidgetItem(item_text)
             item.setTextAlignment(Qt.AlignVCenter | Qt.AlignLeft)
             self.sidebar.addItem(item)
@@ -164,9 +158,9 @@ class PrototypeWindow(QMainWindow):
         profile_layout = QVBoxLayout(profile_box)
         profile_layout.setContentsMargins(14, 14, 14, 14)
         profile_layout.setSpacing(6)
-        profile_layout.addWidget(self._pill("Prototype Profile"))
+        profile_layout.addWidget(self._pill("예시 프로필"))
         profile_layout.addWidget(self._value_label(self.snapshot.profile_name))
-        profile_layout.addWidget(self._muted_label("Prepared for screenshots, feature pitches, and client demos"))
+        profile_layout.addWidget(self._muted_label("크몽 소개 이미지나 상담용 캡처에 맞춘 간단한 형태"))
 
         layout.addWidget(brand)
         layout.addWidget(caption)
@@ -184,10 +178,7 @@ class PrototypeWindow(QMainWindow):
         layout.addWidget(self._build_header())
 
         self.stack.addWidget(self._wrap_page(self._build_dashboard_page()))
-        self.stack.addWidget(self._wrap_page(self._build_strategy_page()))
-        self.stack.addWidget(self._wrap_page(self._build_risk_page()))
-        self.stack.addWidget(self._wrap_page(self._build_exchange_page()))
-        self.stack.addWidget(self._wrap_page(self._build_activity_page()))
+        self.stack.addWidget(self._wrap_page(self._build_settings_page()))
         layout.addWidget(self.stack, stretch=1)
         return container
 
@@ -211,9 +202,8 @@ class PrototypeWindow(QMainWindow):
 
         actions = QHBoxLayout()
         actions.setSpacing(10)
-        actions.addWidget(self._action_button("Start Preview", "primaryButton"))
-        actions.addWidget(self._action_button("Run Backtest", "secondaryButton"))
-        actions.addWidget(self._action_button("Export Report", "secondaryButton"))
+        actions.addWidget(self._action_button("미리보기", "primaryButton"))
+        actions.addWidget(self._action_button("전략 테스트", "secondaryButton"))
 
         layout.addLayout(text_column, stretch=1)
         layout.addLayout(actions)
@@ -236,137 +226,68 @@ class PrototypeWindow(QMainWindow):
         lower_grid.setVerticalSpacing(14)
         lower_grid.addWidget(self._market_pulse_card(), 0, 0)
         lower_grid.addWidget(self._signals_card(), 0, 1)
-        lower_grid.addWidget(self._positions_card(), 1, 0, 1, 2)
+        lower_grid.addWidget(self._positions_card(), 1, 0)
+        lower_grid.addWidget(self._activity_card(), 1, 1)
         layout.addLayout(lower_grid)
         return page
 
-    def _build_strategy_page(self) -> QWidget:
+    def _build_settings_page(self) -> QWidget:
         page = QWidget()
         layout = QGridLayout(page)
         layout.setHorizontalSpacing(16)
         layout.setVerticalSpacing(16)
 
-        template_box = self._card_box("Template Stack")
+        template_box = self._card_box("전략 선택")
         template_layout = template_box.layout()
         assert isinstance(template_layout, QVBoxLayout)
-        template_layout.addWidget(self._template_card("Pullback Hunter", "EMA reclaim + volume confirmation", True))
-        template_layout.addWidget(self._template_card("Breakout Engine", "Level sweep + close above range", False))
-        template_layout.addWidget(self._template_card("RSI Snapback", "Short-term exhaustion mean reversion", False))
+        template_layout.addWidget(self._template_card("눌림목 매수", "이동평균 근처 눌림 후 회복 시 진입", True))
+        template_layout.addWidget(self._template_card("돌파 매수", "고점 돌파와 거래량 증가가 같이 나올 때 진입", False))
+        template_layout.addWidget(self._template_card("RSI 반등", "과매도 이후 짧은 반등을 노리는 방식", False))
         template_layout.addStretch(1)
 
-        editor_box = self._card_box("Parameter Grid")
+        editor_box = self._card_box("매수 기준")
         editor_layout = editor_box.layout()
         assert isinstance(editor_layout, QVBoxLayout)
         for field in self.snapshot.strategy_fields:
             editor_layout.addWidget(self._strategy_control(field))
 
-        toggles_box = self._card_box("Condition Switches")
-        toggles_layout = toggles_box.layout()
-        assert isinstance(toggles_layout, QVBoxLayout)
-        for text, enabled in [
-            ("Use higher timeframe trend filter", True),
-            ("Require volume expansion on entry", True),
-            ("Block overheated 10m momentum", True),
-            ("Allow one-bar re-entry after take profit", False),
-        ]:
-            checkbox = QCheckBox(text)
-            checkbox.setChecked(enabled)
-            toggles_layout.addWidget(checkbox)
-        toggles_layout.addStretch(1)
-
-        layout.addWidget(template_box, 0, 0, 2, 1)
-        layout.addWidget(editor_box, 0, 1)
-        layout.addWidget(toggles_box, 1, 1)
-        return page
-
-    def _build_risk_page(self) -> QWidget:
-        page = QWidget()
-        layout = QGridLayout(page)
-        layout.setHorizontalSpacing(16)
-        layout.setVerticalSpacing(16)
-
-        risk_editor = self._card_box("Risk Rails")
-        risk_layout = risk_editor.layout()
+        risk_box = self._card_box("자금 / 리스크")
+        risk_layout = risk_box.layout()
         assert isinstance(risk_layout, QVBoxLayout)
         for field in self.snapshot.risk_fields:
             risk_layout.addWidget(self._strategy_control(field))
 
-        checklist = self._card_box("Safety Gates")
-        checklist_layout = checklist.layout()
-        assert isinstance(checklist_layout, QVBoxLayout)
-        for text in [
-            "Paper mode must run successfully before live mode unlocks",
-            "Double confirmation required for first live order",
-            "Exchange minimum order size validation enabled",
-            "Daily stop disables new entries across all markets",
-            "Position import required after manual live orders",
+        options_box = self._card_box("운영 설정")
+        options_layout = options_box.layout()
+        assert isinstance(options_layout, QVBoxLayout)
+        for line in [
+            ("거래소", "Bybit 우선, 다른 거래소도 맞춤 연동 가능"),
+            ("거래 코인", "BTC / ETH / XRP"),
+            ("기준 봉", "5분봉"),
+            ("실행 주기", "30초마다 점검"),
+            ("거래 시간", "오전 9시 ~ 새벽 2시"),
+        ]:
+            options_layout.addWidget(self._summary_row(line[0], line[1]))
+        for text, enabled in [
+            ("손절 후 자동 대기 시간 적용", True),
+            ("같은 코인 재진입 제한", True),
+            ("실거래 전 모의매매 먼저 확인", True),
+            ("사용자가 직접 거래소 API 키 입력", True),
         ]:
             checkbox = QCheckBox(text)
-            checkbox.setChecked(True)
-            checklist_layout.addWidget(checkbox)
-        checklist_layout.addStretch(1)
-
-        summary = self._card_box("Risk Story")
-        summary_layout = summary.layout()
-        assert isinstance(summary_layout, QVBoxLayout)
-        for line in [
-            "Designed to sell a disciplined product, not a black-box money promise.",
-            "Each profile exposes enough knobs for clients without opening free-form scripting.",
-            "The UI keeps capital, cooldowns, and stops visible at all times.",
-        ]:
-            summary_layout.addWidget(self._muted_label(line))
-        summary_layout.addStretch(1)
-
-        layout.addWidget(risk_editor, 0, 0, 2, 1)
-        layout.addWidget(checklist, 0, 1)
-        layout.addWidget(summary, 1, 1)
-        return page
-
-    def _build_exchange_page(self) -> QWidget:
-        page = QWidget()
-        layout = QGridLayout(page)
-        layout.setHorizontalSpacing(16)
-        layout.setVerticalSpacing(16)
-
-        connectors = self._card_box("Connector Options")
-        connectors_layout = connectors.layout()
-        assert isinstance(connectors_layout, QVBoxLayout)
+            checkbox.setChecked(enabled)
         for exchange in self.snapshot.exchanges:
-            connectors_layout.addWidget(self._exchange_card(exchange.name, exchange.note, exchange.badge))
+            options_layout.addWidget(self._exchange_card(exchange.name, exchange.note, exchange.badge))
+        options_layout.addStretch(1)
 
-        secrets = self._card_box("Secret Handling")
-        secrets_layout = secrets.layout()
-        assert isinstance(secrets_layout, QVBoxLayout)
-        for line in [
-            "API keys should live in OS keychain storage, not in a plain-text TOML file.",
-            "Connection test should verify read-only scope first, then trading scope.",
-            "The production app can hide unsupported exchanges per customer package.",
-        ]:
-            secrets_layout.addWidget(self._muted_label(line))
-        secrets_layout.addStretch(1)
-
-        package_box = self._card_box("Sales Package Framing")
-        package_layout = package_box.layout()
-        assert isinstance(package_layout, QVBoxLayout)
-        for line in [
-            "Basic: single strategy template + profile save/load",
-            "Advanced: custom risk rails + multiple market watchlists",
-            "Premium: exchange-specific adapter and onboarding support",
-        ]:
-            package_layout.addWidget(self._value_label(line))
-        package_layout.addStretch(1)
-
-        layout.addWidget(connectors, 0, 0)
-        layout.addWidget(secrets, 0, 1)
-        layout.addWidget(package_box, 1, 0, 1, 2)
+        layout.addWidget(template_box, 0, 0)
+        layout.addWidget(editor_box, 0, 1)
+        layout.addWidget(risk_box, 1, 0)
+        layout.addWidget(options_box, 1, 1)
         return page
 
-    def _build_activity_page(self) -> QWidget:
-        page = QWidget()
-        layout = QVBoxLayout(page)
-        layout.setSpacing(16)
-
-        box = self._card_box("Recent Activity")
+    def _activity_card(self) -> QWidget:
+        box = self._card_box("최근 알림")
         box_layout = box.layout()
         assert isinstance(box_layout, QVBoxLayout)
         for item in self.snapshot.activities:
@@ -385,19 +306,18 @@ class PrototypeWindow(QMainWindow):
             row_layout.addLayout(content, stretch=1)
             box_layout.addWidget(row)
         box_layout.addStretch(1)
-        layout.addWidget(box)
-        return page
+        return box
 
     def _market_pulse_card(self) -> QWidget:
-        box = self._card_box("Market Pulse")
+        box = self._card_box("시장 흐름")
         layout = box.layout()
         assert isinstance(layout, QVBoxLayout)
-        layout.addWidget(self._muted_label("Mock momentum curve for the sales prototype dashboard"))
+        layout.addWidget(self._muted_label("실시간 차트 대신, 이런 식으로 분위기를 보여주는 예시 그래프"))
         layout.addWidget(PulseChart(self.snapshot.market_pulse))
         return box
 
     def _signals_card(self) -> QWidget:
-        box = self._card_box("Signal Radar")
+        box = self._card_box("진입 대기")
         layout = box.layout()
         assert isinstance(layout, QVBoxLayout)
         for signal in self.snapshot.signals:
@@ -417,11 +337,11 @@ class PrototypeWindow(QMainWindow):
         return box
 
     def _positions_card(self) -> QWidget:
-        box = self._card_box("Open Position Preview")
+        box = self._card_box("보유 종목 예시")
         layout = box.layout()
         assert isinstance(layout, QVBoxLayout)
         table = QTableWidget(len(self.snapshot.positions), 6)
-        table.setHorizontalHeaderLabels(["Market", "Strategy", "Entry", "Mark", "PnL", "Hold"])
+        table.setHorizontalHeaderLabels(["코인", "전략", "진입가", "현재가", "수익률", "보유"])
         table.verticalHeader().setVisible(False)
         table.setAlternatingRowColors(True)
         table.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -457,7 +377,7 @@ class PrototypeWindow(QMainWindow):
         layout.addWidget(self._value_label(title))
         layout.addWidget(self._muted_label(description))
         if active:
-            layout.addWidget(self._pill("Selected"))
+            layout.addWidget(self._pill("선택됨"))
         return card
 
     def _strategy_control(self, field: StrategyField) -> QWidget:
@@ -487,6 +407,15 @@ class PrototypeWindow(QMainWindow):
         widget.setButtonSymbols(QSpinBox.NoButtons)
         widget.setAlignment(Qt.AlignRight)
         layout.addWidget(widget)
+        return row
+
+    def _summary_row(self, label: str, value: str) -> QWidget:
+        row = QFrame()
+        layout = QHBoxLayout(row)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(10)
+        layout.addWidget(self._muted_label(label))
+        layout.addWidget(self._value_label(value), stretch=1)
         return row
 
     def _exchange_card(self, title: str, note: str, badge: str) -> QWidget:
@@ -540,31 +469,30 @@ class PrototypeWindow(QMainWindow):
         self.setStyleSheet(
             """
             QMainWindow {
-                background: #e9e1d2;
+                background: #f1eadf;
                 color: #17302c;
             }
             #sidePanel {
-                background: #102723;
+                background: #e8dece;
             }
             #contentPanel {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #f7f1e6, stop:1 #efe7db);
+                    stop:0 #fbf7f1, stop:1 #f3ecdf);
             }
             #brandLabel {
-                color: #f6efe4;
-                font-size: 29px;
+                color: #183933;
+                font-size: 28px;
                 font-weight: 800;
-                line-height: 1.1em;
             }
             #sideCaption {
-                color: #9db1aa;
+                color: #5f6f69;
                 font-size: 13px;
             }
             #profileBox, #heroPanel, #metricCard, #templateCard, #templateCardActive,
             #exchangeCard, #timelineRow, #signalRow {
-                border: 1px solid #cfbfaa;
+                border: 1px solid #d8c9b6;
                 border-radius: 18px;
-                background: rgba(255, 251, 244, 0.92);
+                background: rgba(255, 251, 244, 0.95);
             }
             #templateCardActive {
                 border: 2px solid #e45d34;
@@ -572,29 +500,30 @@ class PrototypeWindow(QMainWindow):
             }
             #heroPanel {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #102a26, stop:1 #214841);
-                border: none;
+                    stop:0 #fff7eb, stop:1 #f6dfcf);
+                border: 1px solid #e1cdbb;
             }
             #heroTitle {
-                color: #f7f1e6;
-                font-size: 34px;
+                color: #183933;
+                font-size: 32px;
                 font-weight: 800;
             }
             #heroSubtitle {
-                color: #cfdbd4;
+                color: #5d6f69;
                 font-size: 14px;
             }
             #navList {
                 background: transparent;
                 border: none;
                 outline: none;
-                color: #d5e1db;
+                color: #183933;
                 font-size: 14px;
+                font-weight: 700;
             }
             #navList::item {
                 border-radius: 14px;
                 padding: 14px 14px;
-                background: rgba(255, 255, 255, 0.04);
+                background: rgba(255, 255, 255, 0.55);
                 margin-bottom: 6px;
             }
             #navList::item:selected {
@@ -608,8 +537,6 @@ class PrototypeWindow(QMainWindow):
                 padding: 5px 10px;
                 font-size: 11px;
                 font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
             }
             #valueLabel {
                 color: #14302b;
@@ -635,7 +562,7 @@ class PrototypeWindow(QMainWindow):
                 font-size: 15px;
                 font-weight: 800;
                 color: #14302b;
-                border: 1px solid #cfbfaa;
+                border: 1px solid #d8c9b6;
                 border-radius: 18px;
                 margin-top: 10px;
                 background: rgba(255, 252, 247, 0.88);
@@ -658,9 +585,9 @@ class PrototypeWindow(QMainWindow):
                 border: none;
             }
             #secondaryButton {
-                background: transparent;
-                color: #f6efe4;
-                border: 1px solid #6d8d84;
+                background: rgba(255, 255, 255, 0.75);
+                color: #183933;
+                border: 1px solid #d7c8b5;
             }
             QProgressBar {
                 height: 24px;
